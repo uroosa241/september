@@ -13,11 +13,16 @@ VIDEO_DIR = BASE_DIR / "assets" / "videos"
 MUSIC_DIR = BASE_DIR / "assets" / "music"
 SECRET_DIR = BASE_DIR / "assets" / "secret"
 
-photos = sorted(PHOTO_DIR.glob("*")) if PHOTO_DIR.exists() else []
-videos = sorted(VIDEO_DIR.glob("*")) if VIDEO_DIR.exists() else []
+def list_real_files(folder):
+    if not folder.exists():
+        return []
+    return sorted(f for f in folder.glob("*") if f.is_file() and not f.name.startswith("."))
+
+photos = list_real_files(PHOTO_DIR)
+videos = list_real_files(VIDEO_DIR)
 music_file = MUSIC_DIR / "birthday.mp3.mpeg"
 
-secret_videos = sorted(SECRET_DIR.glob("*")) if SECRET_DIR.exists() else []
+secret_videos = list_real_files(SECRET_DIR)
 
 # ================= CSS =================
 st.markdown("""
